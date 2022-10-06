@@ -83,7 +83,7 @@ while running:
             left = c*32
             top = r*32
             if tile == "#":
-                pg.draw.rect(screen, (20,20,220), pg.Rect(left+1, top+1, 30,30), 1)
+                pg.draw.rect(screen, (220,220,220), pg.Rect(left+1, top+1, 30,30), 1)
 
 
 
