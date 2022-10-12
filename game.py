@@ -48,7 +48,7 @@ num_cols = len(level[0])
 pg.mixer.pre_init(44100, 32, 2, 1024)
 pg.mixer.init()
 
-pg.mixer.music.load("pacman_banging.wav")
+pg.mixer.music.load("mr_pleasure.mp3")
 pg.mixer.music.play(-1)
 
 
