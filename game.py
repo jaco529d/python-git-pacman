@@ -39,6 +39,12 @@ num_rows = len(level)
 num_cols = len(level[0])
 
 
+## Sound ##
+pg.mixer.pre_init(44100, 32, 2, 1024)
+pg.mixer.init()
+
+pg.mixer.music.load("pacman_banging.wav")
+pg.mixer.music.play()
 
 
 ## Game Loop ##
