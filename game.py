@@ -17,6 +17,11 @@ for i in range(6):
     img = pg.transform.scale(img, (32,32))
     pacman_images.append(img)
 
+ghost_red_images = []
+for i in range(3):
+    img = pg.image.load(f'images/ghost_red_{i}.png')
+    img = pg.transform.scale(img, (32,32))
+    ghost_red_images.append(img)
 
 ## Level ##
 level = []
@@ -44,7 +49,7 @@ pg.mixer.pre_init(44100, 32, 2, 1024)
 pg.mixer.init()
 
 pg.mixer.music.load("pacman_banging.wav")
-pg.mixer.music.play()
+pg.mixer.music.play(-1)
 
 
 ## Game Loop ##
@@ -105,7 +110,10 @@ while running:
         screen.blit(pg.transform.rotate(pacman_images[r],90), (x, y))
     else:
         screen.blit(pacman_images[0], (x, y))
-            
+
+    # Draw Ghost #
+    g = int((tick/3)%3)
+    screen.blit(ghost_red_images[g], (64,64))        
 
     # Update screen
     pg.display.flip()
