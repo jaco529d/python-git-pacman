@@ -4,11 +4,6 @@ import random
 import pygame as pg
 
 ## Load images ##
-pacman_images = []
-for i in range(6):
-    img = pg.image.load(f"images/pacman_{i}.png")
-    img = pg.transform.scale(img, (32,32))
-    pacman_images.append(img)
 
 class PacMan:
     #Construtor
@@ -16,7 +11,11 @@ class PacMan:
         self.x = x # attribute
         self.y = y # attribute
         self.r = 0
-        print("hello from pacman init")
+        self.pacman_images = []
+        for i in range(6):
+            img = pg.image.load(f"images/pacman_{i}.png")
+            img = pg.transform.scale(img, (32,32))
+            self.pacman_images.append(img)
 
     def move(self, new_direction):
         if new_direction == "left":
@@ -35,7 +34,7 @@ class PacMan:
     def draw(self,screen,direction,tick):
         #pg.draw.circle(screen, (220,220,20), (self.x,self.y), 16)
         k = int((tick/2)%6)
-        img_direction = pg.transform.rotate(pacman_images[k],self.r)
+        img_direction = pg.transform.rotate(self.pacman_images[k],self.r)
         screen.blit(img_direction,(self.x,self.y))
 
 class Ghost:
@@ -43,6 +42,11 @@ class Ghost:
         self.x = x
         self.y = y
         print('hello from ghost init')
+        self.ghost_red_images = []
+        for i in range(3):
+            img = pg.image.load(f'images/ghost_red_{i}.png')
+            img = pg.transform.scale(img, (32,32))
+            self.ghost_red_images.append(img)
     
     def move(self):
         dx = random.randint(-10,10)
@@ -51,13 +55,15 @@ class Ghost:
         self.y += dy
 
     def draw(self,screen):
-        pg.draw.circle(screen, (250,50,50), (self.x,self.y),16)
+        k = int((tick/2)%3)
+        screen.blit(self.ghost_red_images[k],(self.x,self.y))
+        #pg.draw.circle(screen, (250,50,50), (self.x,self.y),16)
 
 ## Screen setup ##
 pg.init()
 screen = pg.display.set_mode((600,800))
 pg.display.set_caption("Pac-Man")
-pg.display.set_icon(pacman_images[1])
+#pg.display.set_icon(pacman_images[1])
 
 #opretter objekter
 pacman = PacMan(100,100)
@@ -99,4 +105,4 @@ while running:
 
     # Framerate (limit by doing nothing)
     tick += 1
-    time.sleep(0.05)
+    time.sleep(0.2)
