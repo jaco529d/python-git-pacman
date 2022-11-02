@@ -8,8 +8,6 @@ pg.init()
 screen = pg.display.set_mode((600,800))
 pg.display.set_caption("Pac-Man (clone)")
 
-
-
 ## Load images ##
 pacman_images = []
 for i in range(6):
