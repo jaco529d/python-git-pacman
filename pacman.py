@@ -11,6 +11,7 @@ class PacMan:
         self.x = x # attribute
         self.y = y # attribute
         self.r = 0
+        self.speed = 10
         self.pacman_images = []
         for i in range(6):
             img = pg.image.load(f"images/pacman_{i}.png")
@@ -19,16 +20,16 @@ class PacMan:
 
     def move(self, new_direction):
         if new_direction == "left":
-            self.x -= 5
+            self.x -= self.speed
             self.r = 0
         elif new_direction == "right":
-            self.x += 5
+            self.x += self.speed
             self.r = 180
         elif new_direction == "up":
-            self.y -= 5
+            self.y -= self.speed
             self.r = -90
         elif new_direction == "down":
-            self.y += 5
+            self.y += self.speed
             self.r = 90
 
     def draw(self,screen,direction,tick):
@@ -41,18 +42,26 @@ class Ghost:
     def __init__(self, x,y):
         self.x = x
         self.y = y
-        print('hello from ghost init')
+        self.speed = 2
         self.ghost_red_images = []
         for i in range(3):
             img = pg.image.load(f'images/ghost_red_{i}.png')
             img = pg.transform.scale(img, (32,32))
             self.ghost_red_images.append(img)
     
-    def move(self):
-        dx = random.randint(-10,10)
+    def move(self,target):
+        """dx = random.randint(-10,10)
         dy = random.randint(-10,10)
         self.x += dx
-        self.y += dy
+        self.y += dy"""
+        if self.x > target.x:
+            self.x -= self.speed
+        elif self.x < target.x:
+            self.x += self.speed
+        if self.y > target.y:
+            self.y -= self.speed
+        elif self.y < target.y:
+            self.y += self.speed
 
     def draw(self,screen):
         k = int((tick/2)%3)
@@ -93,12 +102,12 @@ while running:
 
     # Logic #
     pacman.move(direction) # Kalde metoden move()
-    ghost.move()
+    ghost.move(pacman)
 
     # Drawing #
     screen.fill((0,0,0))
-    pacman.draw(screen,direction,tick)
     ghost.draw(screen)
+    pacman.draw(screen,direction,tick)
 
     # Update screen
     pg.display.flip()
