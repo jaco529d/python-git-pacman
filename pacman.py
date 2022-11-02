@@ -74,8 +74,8 @@ class LevelConstructor:
                     if char == "#":
                         row.append("#")
                     elif char == "p":
-                        y = r*32
-                        x = c*32
+                        self.player_pos_y = r*32
+                        self.player_pos_x = c*32
                         row.append(" ")
                     else:
                         row.append("*")
@@ -102,9 +102,9 @@ pg.display.set_caption("Pac-Man")
 #pg.display.set_icon(pacman_images[1])
 
 #opretter objekter
-pacman = PacMan(100,100)
-ghost = Ghost(200,200)
 level = LevelConstructor()
+pacman = PacMan(level.player_pos_x, level.player_pos_y)
+ghost = Ghost(200,200)
 
 direction = None
 running = True
