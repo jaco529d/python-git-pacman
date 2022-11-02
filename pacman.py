@@ -3,8 +3,6 @@ import time
 import random
 import pygame as pg
 
-## Load images ##
-
 class PacMan:
     #Construtor
     def __init__(self,x,y):
@@ -12,6 +10,7 @@ class PacMan:
         self.y = y # attribute
         self.r = 0
         self.speed = 10
+        #image loading
         self.pacman_images = []
         for i in range(6):
             img = pg.image.load(f"images/pacman_{i}.png")
@@ -43,6 +42,7 @@ class Ghost:
         self.x = x
         self.y = y
         self.speed = 2
+        #image loading
         self.ghost_red_images = []
         for i in range(3):
             img = pg.image.load(f'images/ghost_red_{i}.png')
@@ -50,10 +50,6 @@ class Ghost:
             self.ghost_red_images.append(img)
     
     def move(self,target):
-        """dx = random.randint(-10,10)
-        dy = random.randint(-10,10)
-        self.x += dx
-        self.y += dy"""
         if self.x > target.x:
             self.x -= self.speed
         elif self.x < target.x:
@@ -68,6 +64,37 @@ class Ghost:
         screen.blit(self.ghost_red_images[k],(self.x,self.y))
         #pg.draw.circle(screen, (250,50,50), (self.x,self.y),16)
 
+class LevelConstructor:
+    def __init__(self,level='level.txt'):
+        self.level = []
+        with open(level, 'r') as level_file:
+            for r, line in enumerate(level_file):
+                row = []
+                for c, char in enumerate(line):
+                    if char == "#":
+                        row.append("#")
+                    elif char == "p":
+                        y = r*32
+                        x = c*32
+                        row.append(" ")
+                    else:
+                        row.append("*")
+
+                self.level.append(row)
+
+        self.num_rows = len(self.level)
+        self.num_cols = len(self.level[0])
+    
+    def draw(self,screen):
+        for r, row in enumerate(self.level):
+            for c, tile in enumerate(row):
+                left = c*32
+                top = r*32
+                if tile == "#":
+                    pg.draw.rect(screen, (50,50,220), pg.Rect(left+1, top+1, 30,30), 1)
+                elif tile == '*':
+                    pg.draw.circle(screen, (250,250,250), (left+16,top+16), 4)
+
 ## Screen setup ##
 pg.init()
 screen = pg.display.set_mode((600,800))
@@ -77,6 +104,7 @@ pg.display.set_caption("Pac-Man")
 #opretter objekter
 pacman = PacMan(100,100)
 ghost = Ghost(200,200)
+level = LevelConstructor()
 
 direction = None
 running = True
@@ -106,6 +134,7 @@ while running:
 
     # Drawing #
     screen.fill((0,0,0))
+    level.draw(screen)
     ghost.draw(screen)
     pacman.draw(screen,direction,tick)
 
